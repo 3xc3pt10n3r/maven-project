@@ -1,6 +1,16 @@
 pipeline {
     agent any
-    stages{
+
+    parameters {
+         string(name: 'tomcat_dev', defaultValue: '35.166.210.154', description: 'Staging Server')
+         string(name: 'tomcat_prod', defaultValue: '34.209.233.6', description: 'Production Server')
+    }
+
+    triggers {
+         pollSCM('* * * * *')
+     }
+
+stages{
         stage('Build'){
             steps {
                 sh 'mvn clean package'
@@ -12,9 +22,15 @@ pipeline {
                 }
             }
         }
-        stage ('Deploy to Staging'){
-            steps {
-                build job: 'deploy-staging-maven-project'
+
+        stage ('Deployments'){
+            parallel{
+                stage ('Deploy to Staging'){
+                    steps {
+                        sh 'curl --upload-file target\webapp.war "http://tomcat:tomcat123@localhost:8090/manager/deploy?path=/webapp&update=true'
+                    }
+                }
+
             }
         }
     }
