@@ -26,7 +26,7 @@ stages{
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
-                        sh "curl --upload-file target/webapp.war "http://tomcat:tomcat123@localhost:8090/manager/deploy?path=/webapp&update=true"
+                        sh "curl --upload-file target/webapp.war http://tomcat:tomcat123@localhost:8090/manager/deploy?path=/webapp&update=true"
                     }
                 }
 
