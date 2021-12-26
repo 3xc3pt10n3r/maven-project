@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     parameters {
-         string(name: 'tomcat_dev', defaultValue: '35.166.210.154', description: 'Staging Server')
-         string(name: 'tomcat_prod', defaultValue: '34.209.233.6', description: 'Production Server')
+         string(name: 'tomcat_dev', defaultValue: 'localhost', description: 'Staging Server')
     }
 
     triggers {
@@ -27,7 +26,7 @@ stages{
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
-                        sh 'curl --upload-file target/webapp.war "http://tomcat:tomcat123@localhost:8090/manager/deploy?path=/webapp&update=true'
+                        sh "curl --upload-file target/webapp.war "http://tomcat:tomcat123@localhost:8090/manager/deploy?path=/webapp&update=true"
                     }
                 }
 
