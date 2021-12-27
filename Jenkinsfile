@@ -5,14 +5,15 @@ pipeline {
          string(name: 'tomcat_dev', defaultValue: 'localhost', description: 'Staging Server')
     }
 
-    triggers {
-         pollSCM('* * * * *')
-     }
+    // triggers {
+    //      pollSCM('* * * * *')
+    //  }
 
 stages{
         stage('Build'){
             steps {
                 sh 'mvn clean package'
+                sh 'docker build . -t tomcatwebapp:{env.BUILD_ID}'
             }
             post {
                 success {
